@@ -1,23 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import IdleModal from "src/components/components/idle-modal";
 
-export default function RoomsPage() {
+export default function RoomsPage({ searchParams }) {
   const [showCustomerModal, setShowCustomerModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
-
+  const { destination, startDate, endDate } = use(searchParams);
   const rooms = [
-    {
-      id: 1,
-      name: "Deluxe Sea View Room",
-      price: 220,
-      img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80",
-    },
     {
       id: 2,
       name: "Garden Suite",
@@ -25,24 +20,74 @@ export default function RoomsPage() {
       img: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80",
     },
     {
+      id: 1,
+      name: "Deluxe Sea View Room",
+      price: 220,
+      img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80",
+    },
+    {
       id: 3,
-      name: "Penthouse",
+      name: "Bungalow",
       price: 400,
       img: "https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?auto=format&fit=crop&w=800&q=80",
     },
   ];
 
+  const formatDate = (isoDate) => {
+    const [year, month, day] = isoDate.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50">
+      <IdleModal />
       {/* Hero section */}
       <div className="relative bg-neutral-900 text-white py-16 text-center">
         <h1 className="text-4xl font-bold">Available Rooms</h1>
         <p className="mt-2 text-neutral-300">
           Handpicked stays with comfort and elegance
         </p>
+        <Link href="/">
+          <button className="items-center justify-center flex rounded text-white bg-transparent border border-white px-4 py-2 font-medium absolute top-4 left-4 z-10">
+            Back
+          </button>
+        </Link>
       </div>
 
       {/* Room list */}
+      <form className="mx-auto max-w-7xl flex gap-3 items-center px-6 justify-center mt-6">
+        <input
+          readOnly
+          aria-label="Destination"
+          placeholder="Where to? (Ibiza, Sicily, Riviera Maya...)"
+          className="placeholder:text-gray-500 flex-1 text-gray-800 border-gray-200 bg-white rounded-xl border px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-neutral-900"
+          value={destination}
+        />
+        <input
+          readOnly
+          aria-label="Check-in"
+          placeholder="Check-in"
+          type="date"
+          value={startDate}
+          className="placeholder:text-gray-500 flex-1 text-gray-800 border-gray-200 bg-white rounded-xl border px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-neutral-900"
+        />
+        <input
+          readOnly
+          aria-label="Check-out"
+          placeholder="Check-out"
+          type="date"
+          value={endDate}
+          className="placeholder:text-gray-500 flex-1 text-gray-800 border-gray-200 bg-white rounded-xl border px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-neutral-900"
+        />
+        <a href="/rooms">
+          <button
+            type="button"
+            className="rounded-xl bg-neutral-900 border-gray-200 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800"
+          >
+            Search
+          </button>
+        </a>
+      </form>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {rooms.map((room) => (
@@ -184,7 +229,7 @@ export default function RoomsPage() {
 
                 <button
                   onClick={() => setShowSuccessModal(false)}
-                  className="rounded-lg bg-neutral-900 text-white px-4 py-2 hover:bg-neutral-800"
+                  className=" rounded-lg bg-neutral-900 text-white px-4 py-2 hover:bg-neutral-800"
                 >
                   X
                 </button>
@@ -196,25 +241,27 @@ export default function RoomsPage() {
                   <h3 className="font-semibold text-gray-800 mb-2">
                     Booking Summary
                   </h3>
-                  <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-neutral-700">
+                  <ul className="grid grid-cols-3 gap-x-6 gap-y-2 text-sm text-neutral-700">
                     <li>
                       <strong>Room:</strong> {selectedRoom?.name}
                     </li>
                     <li>
-                      <strong>Check-in:</strong> 10/09/2025
+                      <strong>Check-in:</strong> {formatDate(startDate)}
                     </li>
                     <li>
-                      <strong>Email:</strong> {bookingDetails?.email}
-                    </li>
-                    <li>
-                      <strong>Check-out:</strong> 12/09/2025
-                    </li>
-                    <li>
-                      <strong>Phone:</strong> {bookingDetails?.phone}
+                      <strong>Check-out:</strong> {formatDate(endDate)}
                     </li>
                     <li>
                       <strong>Booking Reference Number:</strong> TE23SD54
                     </li>
+                    <li>
+                      <strong>Email:</strong> {bookingDetails?.email}
+                    </li>
+
+                    <li>
+                      <strong>Phone:</strong> {bookingDetails?.phone}
+                    </li>
+
                     <li>
                       <strong>Total:</strong> €{selectedRoom?.price * 2}
                     </li>
@@ -222,15 +269,14 @@ export default function RoomsPage() {
                   <div className="flex items-center justify-between mt-4 bg-[#CCF2F3] text-[#0053B8] shadow-[0px_0px_0px_1px_#A0E2EC] rounded-xl p-4">
                     <div className="flex flex-col">
                       <p className="text-xl font-semibold">
-                        ⚡ Book now and get more than 10% discount on car
-                        rental!
+                        ⚡ Skip the lines!
                       </p>
                       <p className="pl-7 text-base font-medium">
-                        We will deliver it to the hotel.
+                        Book your car now — delivered straight to your hotel.
                       </p>
                     </div>
                     <a href="#frame">
-                      <button className="bg-gray-800 cursor-pointer h-fit p-2 px-4 rounded-lg text-white">
+                      <button className="bg-gray-800  h-fit p-2 px-4 rounded-lg text-white">
                         Book Now
                       </button>
                     </a>

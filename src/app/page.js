@@ -14,11 +14,6 @@ import { Newsletter } from "../components/newsletter";
 import { Footer } from "../components/footer";
 import IdleModal from "../components/idle-modal";
 
-// 1. Scale down the iframe
-// 2. Fix scroll behaviour
-// 3. Adapt modal
-// 4. Deploy the website
-
 export default function HotelGroupLanding() {
   return (
     <div className="min-h-screen bg-white text-neutral-900">

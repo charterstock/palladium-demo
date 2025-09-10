@@ -4,19 +4,19 @@ export function Destinations() {
   const spots = [
     {
       name: "Ibiza, Spain",
-      img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=2069&auto=format&fit=crop",
+      img: "https://images.pexels.com/photos/338504/pexels-photo-338504.jpeg?cs=srgb&dl=pexels-thorsten-technoman-109353-338504.jpg&fm=jpg",
     },
     {
       name: "Sicily, Italy",
-      img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=2069&auto=format&fit=crop",
+      img: "https://media.istockphoto.com/id/1420792712/photo/hotels-and-beaches-along-coastline-below-taormina-in-sicily.jpg?s=612x612&w=0&k=20&c=B7Ge5z1Ucz99hhHQovVnuzatjEgfxmSV4MfEWFKkFx0=",
     },
     {
       name: "Riviera Maya, Mexico",
-      img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=2069&auto=format&fit=crop",
+      img: "https://www.shutterstock.com/image-photo/aerial-panoramic-view-cancun-beach-600nw-2421381857.jpg",
     },
     {
       name: "Tenerife, Spain",
-      img: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=2069&auto=format&fit=crop",
+      img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/21/dc/61/30/best-tenerife.jpg?w=500&h=-1&s=1",
     },
   ];
   return (

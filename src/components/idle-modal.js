@@ -9,32 +9,47 @@ export default function IdleModal() {
   const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
   const idleTimer = useRef(null);
 
-  // detect idle (20s of no movement/keypress)
   useEffect(() => {
-    let idleTimeout;
-
-    const resetIdleTimer = () => {
-      if (idleTimeout) clearTimeout(idleTimeout);
-      if (!showModal && !collapsed) {
-        idleTimeout = setTimeout(() => {
-          setShowModal(true);
-        }, 5000);
+    const handleMouseLeave = (event) => {
+      if (event.clientY <= 0) {
+        // user moved mouse outside top of window → likely closing tab
+        setShowModal(true);
       }
     };
 
-    window.addEventListener("mousemove", resetIdleTimer);
-    window.addEventListener("keydown", resetIdleTimer);
-    window.addEventListener("scroll", resetIdleTimer);
-
-    resetIdleTimer();
+    document.addEventListener("mouseout", handleMouseLeave);
 
     return () => {
-      window.removeEventListener("mousemove", resetIdleTimer);
-      window.removeEventListener("keydown", resetIdleTimer);
-      window.removeEventListener("scroll", resetIdleTimer);
-      if (idleTimeout) clearTimeout(idleTimeout);
+      document.removeEventListener("mouseout", handleMouseLeave);
     };
-  }, [showModal, collapsed]);
+  }, []);
+
+  // detect idle (20s of no movement/keypress)
+  // useEffect(() => {
+  //   let idleTimeout;
+
+  //   const resetIdleTimer = () => {
+  //     if (idleTimeout) clearTimeout(idleTimeout);
+  //     if (!showModal && !collapsed) {
+  //       idleTimeout = setTimeout(() => {
+  //         setShowModal(true);
+  //       }, 5000);
+  //     }
+  //   };
+
+  //   window.addEventListener("mousemove", resetIdleTimer);
+  //   window.addEventListener("keydown", resetIdleTimer);
+  //   window.addEventListener("scroll", resetIdleTimer);
+
+  //   resetIdleTimer();
+
+  //   return () => {
+  //     window.removeEventListener("mousemove", resetIdleTimer);
+  //     window.removeEventListener("keydown", resetIdleTimer);
+  //     window.removeEventListener("scroll", resetIdleTimer);
+  //     if (idleTimeout) clearTimeout(idleTimeout);
+  //   };
+  // }, [showModal, collapsed]);
 
   // countdown timer
   useEffect(() => {
@@ -65,7 +80,7 @@ export default function IdleModal() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+            className="fixed text-neutral-900 inset-0 z-50 flex items-center justify-center bg-black/50"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
@@ -75,7 +90,7 @@ export default function IdleModal() {
             >
               <button
                 onClick={() => setCollapsed(true)}
-                className="absolute top-6 right-6 text-gray-500 hover:text-gray-700 cursor-pointer"
+                className="absolute top-6 right-6 text-gray-500 hover:text-gray-700 "
               >
                 ✕
               </button>
@@ -92,7 +107,7 @@ export default function IdleModal() {
                 </div>
               </div>
               <button
-                className="rounded-xl cursor-pointer bg-neutral-900 border-gray-200 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800 w-full"
+                className="rounded-xl  bg-neutral-900 border-gray-200 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800 w-full"
                 onClick={() => setCollapsed(true)}
               >
                 Continue
@@ -111,7 +126,7 @@ export default function IdleModal() {
         >
           <button
             onClick={() => setCollapsed(false)}
-            className="bg-[#fff0ec] border-[#fc8b67] text-red-500 px-4 py-2 rounded-xl shadow-lg font-mono font-bold cursor-pointer"
+            className="bg-[#fff0ec] border-[#fc8b67] text-red-500 px-4 py-2 rounded-xl shadow-lg font-mono font-bold "
           >
             ⏳ {formatTime(timeLeft)}
           </button>
