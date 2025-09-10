@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -12,6 +12,21 @@ export default function RoomsPage({ searchParams }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
   const { destination, startDate, endDate } = use(searchParams);
+
+  // const iframeRef = useRef(null);
+  // const [height, setHeight] = useState("600px"); // fallback
+
+  // const onIframeLoad = (event) => {
+  // console.log(event.target.getBoundingClientRect());
+  // var iFrameID = document.getElementById("frame");
+  // if (iFrameID) {
+  //   // here you can make the height, I delete it first, then I make it again
+  //   iFrameID.height = "";
+  //   iFrameID.height =
+  //     iFrameID.contentWindow.document.body.scrollHeight + "px";
+  // }
+  // };
+
   const rooms = [
     {
       id: 2,
@@ -284,9 +299,10 @@ export default function RoomsPage({ searchParams }) {
                 </div>
               </div>
               <iframe
+                // onLoad={onIframeLoad}
                 id="frame"
-                src="https://develop.bookinguru.com/offers/ba12e786-6dc4-4512-9ee8-098520055ea6?scroll=0&hideHeader=true&utm_content=Analytics+Test&hideFilters=true&hideLogo=false&orderBy=price%3Aasc&vertical=cars&utm_source=catalog&utm_medium=referral&hideVerticals=true&hideOfferDetails=true&pickUpLocation=Ibiza&startDate=2025-09-10&startTime=600&endDate=2025-09-12&endTime=600&isDriverAgeBetween30And65=true"
-                className="w-[111%] origin-top-left scale-90 h-[4000px] -mb-[400px] border-0"
+                src={`https://app.bookinguru.com/offers/787da5c4-cb19-4a0e-9829-660863981c01?utm_content=TRS+Ibiza+Hotel&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&pickUpLocation=Ibiza&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
+                className="w-[111%] origin-top-left scale-90 h-[4600px] -mb-[400px] border-0"
               />
             </motion.div>
           </motion.div>

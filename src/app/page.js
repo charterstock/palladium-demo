@@ -13,6 +13,7 @@ import { Sustainability } from "../components/sustainability";
 import { Newsletter } from "../components/newsletter";
 import { Footer } from "../components/footer";
 import IdleModal from "../components/idle-modal";
+import { Feedback } from "../components/feedback";
 
 export default function HotelGroupLanding() {
   return (
@@ -22,6 +23,7 @@ export default function HotelGroupLanding() {
         <Hero />
         <Brands />
         <Destinations />
+        <Feedback />
         <Experiences />
         <Offers />
         <Meetings />
