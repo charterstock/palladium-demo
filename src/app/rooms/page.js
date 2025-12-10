@@ -235,7 +235,7 @@ export default function RoomsPage({ searchParams }) {
               initial={{ y: 40, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 40, opacity: 0 }}
-              className="relative bg-white overflow-scroll rounded-2xl w-[70%] h-[90%] shadow-2xl"
+              className="relative bg-white overflow-x-hidden overflow-y-scroll rounded-2xl w-[70%] h-[90%] shadow-2xl"
             >
               <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white z-10">
                 <h2 className="text-2xl font-bold text-gray-800">
@@ -301,8 +301,10 @@ export default function RoomsPage({ searchParams }) {
               <iframe
                 // onLoad={onIframeLoad}
                 id="frame"
-                src={`https://app.bookinguru.com/offers/787da5c4-cb19-4a0e-9829-660863981c01?utm_content=TRS+Ibiza+Hotel&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&pickUpLocation=Ibiza&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
+                src={`https://demo.d229envuj1hcw.amplifyapp.com/offers/0bd66434-d771-47ba-88d3-a0030359ca0f?utm_content=Amare+Beach+Hotel+Ibiza&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&pickUpLocation=Ibiza&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
                 className="w-[111%] origin-top-left scale-90 h-[4600px] -mb-[400px] border-0"
+                // className="w-[107%] h-[4600px] scale-90 -mb-[400px] origin-top"
+                // className="w-full h-full border-0 scale-80"
               />
             </motion.div>
           </motion.div>
