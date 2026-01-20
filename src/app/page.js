@@ -2,7 +2,6 @@
 
 import { Header } from "../components/header";
 import { Hero } from "../components/hero";
-import { Search } from "../components/search";
 import { Brands } from "../components/brands";
 import { Destinations } from "../components/destinations";
 import { Experiences } from "../components/experiences";
@@ -12,8 +11,6 @@ import { Loyalty } from "../components/loyalty";
 import { Sustainability } from "../components/sustainability";
 import { Newsletter } from "../components/newsletter";
 import { Footer } from "../components/footer";
-import IdleModal from "../components/idle-modal";
-import { Feedback } from "../components/feedback";
 
 export default function HotelGroupLanding() {
   return (
@@ -23,7 +20,6 @@ export default function HotelGroupLanding() {
         <Hero />
         <Brands />
         <Destinations />
-        <Feedback />
         <Experiences />
         <Offers />
         <Meetings />
@@ -32,7 +28,6 @@ export default function HotelGroupLanding() {
         <Newsletter />
       </main>
       <Footer />
-      <IdleModal />
     </div>
   );
 }

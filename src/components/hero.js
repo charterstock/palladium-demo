@@ -1,13 +1,10 @@
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { Search } from "./search";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center">
-      {/* dark overlay */}
       <div className="absolute inset-0 bg-black/40" />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28  text-white">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}

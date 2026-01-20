@@ -16,9 +16,10 @@ export function Search() {
       .slice(0, 10);
 
     push(
-      `/rooms?destination=${destination}&startDate=${startDate}&endDate=${endDate}`
+      `/rooms?destination=${destination}&startDate=${startDate}&endDate=${endDate}`,
     );
   };
+
   return (
     <section id="search">
       <div className="mx-auto max-w-7xl">
@@ -53,14 +54,12 @@ export function Search() {
               id="endDate"
               className="placeholder:text-gray-500 text-gray-800 border-gray-200 bg-white rounded-xl border px-3 py-3 text-sm outline-none focus:ring-2 focus:ring-neutral-900"
             />
-            {/* <a href="/rooms"> */}
             <button
               type="submit"
               className="rounded-xl bg-neutral-900 border-gray-200 px-4 py-3 text-sm font-medium text-white hover:bg-neutral-800"
             >
               Search
             </button>
-            {/* </a> */}
           </form>
         </div>
       </div>

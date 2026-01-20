@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,6 +24,19 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <iframe
+          id="widget-f9e99163"
+          src="https://demo.d229envuj1hcw.amplifyapp.com/brand/widgets/embed?iframeCode=widget-f9e99163"
+          style={{
+            position: "fixed",
+            width: 360,
+            height: 200,
+            bottom: 20,
+            right: 20,
+            opacity: 0,
+          }}
+        />
+        <Script src="/widget-triggers.js" strategy="afterInteractive" />
       </body>
     </html>
   );

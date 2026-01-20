@@ -1,10 +1,10 @@
 "use client";
 
-import { use, useEffect, useRef, useState } from "react";
+import { use, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import IdleModal from "src/components/components/idle-modal";
+import Image from "next/image";
 
 export default function RoomsPage({ searchParams }) {
   const [showCustomerModal, setShowCustomerModal] = useState(false);
@@ -13,19 +13,8 @@ export default function RoomsPage({ searchParams }) {
   const [bookingDetails, setBookingDetails] = useState(null);
   const { destination, startDate, endDate } = use(searchParams);
 
-  // const iframeRef = useRef(null);
-  // const [height, setHeight] = useState("600px"); // fallback
-
-  // const onIframeLoad = (event) => {
-  // console.log(event.target.getBoundingClientRect());
-  // var iFrameID = document.getElementById("frame");
-  // if (iFrameID) {
-  //   // here you can make the height, I delete it first, then I make it again
-  //   iFrameID.height = "";
-  //   iFrameID.height =
-  //     iFrameID.contentWindow.document.body.scrollHeight + "px";
-  // }
-  // };
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const rooms = [
     {
@@ -53,10 +42,51 @@ export default function RoomsPage({ searchParams }) {
     return `${day}/${month}/${year}`;
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const data = new FormData(e.target);
+    const details = {
+      name: data.get("name"),
+      email: data.get("email"),
+      phone: data.get("phone"),
+      checkIn: data.get("checkIn"),
+      checkOut: data.get("checkOut"),
+    };
+
+    try {
+      const res = await fetch(
+        "https://9wjmbwm97t.eu-west-1.awsapprunner.com/api/vouchers/send-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: details.email,
+            voucherCode: "AIRPORT05", // hardcoded
+          }),
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error(`Request failed with status ${res.status}`);
+      }
+
+      setBookingDetails(details);
+      setShowCustomerModal(false);
+      setShowSuccessModal(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-neutral-50">
-      <IdleModal />
-      {/* Hero section */}
       <div className="relative bg-neutral-900 text-white py-16 text-center">
         <h1 className="text-4xl font-bold">Available Rooms</h1>
         <p className="mt-2 text-neutral-300">
@@ -68,8 +98,6 @@ export default function RoomsPage({ searchParams }) {
           </button>
         </Link>
       </div>
-
-      {/* Room list */}
       <form className="mx-auto max-w-7xl flex gap-3 items-center px-6 justify-center mt-6">
         <input
           readOnly
@@ -115,9 +143,10 @@ export default function RoomsPage({ searchParams }) {
               className="group overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-shadow duration-300"
             >
               <div className="relative h-52 overflow-hidden">
-                <img
+                <Image
                   src={room.img}
                   alt={room.name}
+                  fill
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
@@ -144,8 +173,6 @@ export default function RoomsPage({ searchParams }) {
           ))}
         </div>
       </div>
-
-      {/* Customer Checkout Modal */}
       <AnimatePresence>
         {showCustomerModal && (
           <motion.div
@@ -161,25 +188,7 @@ export default function RoomsPage({ searchParams }) {
               className="bg-white rounded-2xl p-8 w-full max-w-md shadow-xl text-gray-800"
             >
               <h2 className="text-2xl font-semibold mb-6">Your Details</h2>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-
-                  const data = new FormData(e.target);
-                  const details = {
-                    name: data.get("name"),
-                    email: data.get("email"),
-                    phone: data.get("phone"),
-                    checkIn: data.get("checkIn"),
-                    checkOut: data.get("checkOut"),
-                  };
-
-                  setBookingDetails(details);
-                  setShowCustomerModal(false);
-                  setShowSuccessModal(true);
-                }}
-                className="space-y-4 text-gray-800"
-              >
+              <form onSubmit={onSubmit} className="space-y-4 text-gray-800">
                 <input
                   type="text"
                   name="name"
@@ -200,20 +209,28 @@ export default function RoomsPage({ searchParams }) {
                   placeholder="Phone Number"
                   className="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-neutral-900 outline-none"
                 />
-
+                {error && (
+                  <span className="text-sm text-red-600 font-medium text-left">
+                    {error}
+                  </span>
+                )}
                 <div className="flex justify-end gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setShowCustomerModal(false)}
-                    className="rounded-lg border px-4 py-2 hover:bg-neutral-50"
-                  >
-                    Cancel
-                  </button>
+                  {loading ? null : (
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => setShowCustomerModal(false)}
+                      className="rounded-lg border px-4 py-2 hover:bg-neutral-50"
+                    >
+                      Cancel
+                    </button>
+                  )}
                   <button
                     type="submit"
+                    disabled={loading}
                     className="rounded-lg bg-neutral-900 text-white px-4 py-2 hover:bg-neutral-800"
                   >
-                    Book
+                    {loading ? "Loading..." : "Book"}
                   </button>
                 </div>
               </form>
@@ -221,8 +238,6 @@ export default function RoomsPage({ searchParams }) {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Booking Success Modal */}
       <AnimatePresence>
         {showSuccessModal && (
           <motion.div
@@ -249,8 +264,6 @@ export default function RoomsPage({ searchParams }) {
                   X
                 </button>
               </div>
-
-              {/* Booking Summary */}
               <div className="border border-gray-200 rounded-xl m-4 mb-0">
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-800 mb-2">
@@ -281,30 +294,27 @@ export default function RoomsPage({ searchParams }) {
                       <strong>Total:</strong> €{selectedRoom?.price * 2}
                     </li>
                   </ul>
-                  <div className="flex items-center justify-between mt-4 bg-[#CCF2F3] text-[#0053B8] shadow-[0px_0px_0px_1px_#A0E2EC] rounded-xl p-4">
+                  <div className="flex items-center justify-between mt-4 bg-[#2a8bf4] text-white shadow-[0px_0px_0px_1px_#A0E2EC] rounded-xl p-4">
                     <div className="flex flex-col">
                       <p className="text-xl font-semibold">
-                        ⚡ Skip the lines!
+                        <span className="text-2xl">⚡</span> Skip the lines!
                       </p>
                       <p className="pl-7 text-base font-medium">
                         Book your car now — delivered straight to your hotel.
                       </p>
                     </div>
                     <a href="#frame">
-                      <button className="bg-gray-800  h-fit p-2 px-4 rounded-lg text-white">
-                        Book Now
+                      <button className="bg-transparent h-fit p-2 px-4 rounded-lg border-white border hover:bg-white hover:text-[#2a8bf4]">
+                        <span className="font-bold">Book Now</span>
                       </button>
                     </a>
                   </div>
                 </div>
               </div>
               <iframe
-                // onLoad={onIframeLoad}
                 id="frame"
-                src={`https://demo.d229envuj1hcw.amplifyapp.com/offers/0bd66434-d771-47ba-88d3-a0030359ca0f?utm_content=Amare+Beach+Hotel+Ibiza&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&pickUpLocation=Ibiza&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
+                src={`https://demo.d229envuj1hcw.amplifyapp.com/offers/99a651c0-de87-4411-b57e-443e252d6e70?utm_content=Amare+Beach+Hotel+Ibiza&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&pickUpLocation=Ibiza&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
                 className="w-[111%] origin-top-left scale-90 h-[4600px] -mb-[400px] border-0"
-                // className="w-[107%] h-[4600px] scale-90 -mb-[400px] origin-top"
-                // className="w-full h-full border-0 scale-80"
               />
             </motion.div>
           </motion.div>
