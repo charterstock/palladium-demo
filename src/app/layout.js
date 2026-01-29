@@ -34,6 +34,7 @@ export default function RootLayout({ children }) {
             bottom: 20,
             right: 20,
             opacity: 0,
+            zIndex: 9999,
           }}
         />
         <Script src="/widget-triggers.js" strategy="afterInteractive" />

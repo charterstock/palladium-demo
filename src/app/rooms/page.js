@@ -67,6 +67,7 @@ export default function RoomsPage({ searchParams }) {
           body: JSON.stringify({
             email: details.email,
             voucherCode: "AIRPORT05", // hardcoded
+            companyName: "TRS Hotels"
           }),
         },
       );
