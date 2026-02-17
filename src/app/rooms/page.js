@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -15,6 +15,12 @@ export default function RoomsPage({ searchParams }) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [reservationConfirmed, setReservationConfirmed] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return (
+      sessionStorage.getItem("palladium-demo-reservation-confirmed") === "1"
+    );
+  });
 
   const rooms = [
     {
@@ -42,6 +48,16 @@ export default function RoomsPage({ searchParams }) {
     return `${day}/${month}/${year}`;
   };
 
+  useEffect(() => {
+    const widget = document.getElementById("widget-f9e99163");
+    if (!widget) return;
+    if (reservationConfirmed) {
+      widget.style.display = "none";
+    } else {
+      widget.style.display = "";
+    }
+  }, [reservationConfirmed]);
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -67,7 +83,7 @@ export default function RoomsPage({ searchParams }) {
           body: JSON.stringify({
             email: details.email,
             voucherCode: "AIRPORT05", // hardcoded
-            companyName: "TRS Hotels"
+            companyName: "TRS Hotels",
           }),
         },
       );
@@ -79,6 +95,10 @@ export default function RoomsPage({ searchParams }) {
       setBookingDetails(details);
       setShowCustomerModal(false);
       setShowSuccessModal(true);
+      setReservationConfirmed(true);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("palladium-demo-reservation-confirmed", "1");
+      }
     } catch (err) {
       setError(err.message);
     } finally {
