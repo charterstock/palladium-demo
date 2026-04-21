@@ -334,7 +334,7 @@ export default function RoomsPage({ searchParams }) {
               </div>
               <iframe
                 id="frame"
-                src={`https://demo.d229envuj1hcw.amplifyapp.com/offers/99a651c0-de87-4411-b57e-443e252d6e70?utm_content=Amare+Beach+Hotel+Ibiza&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&pickUpLocation=Ibiza&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
+                src={`https://demo.d229envuj1hcw.amplifyapp.com/offers/99a651c0-de87-4411-b57e-443e252d6e70?utm_content=Amare+Beach+Hotel+Ibiza&utm_medium=referral&utm_source=catalog&hideFilters=true&hideHeader=true&hideLogo=true&hideOfferDetails=true&hideVerticals=true&vertical=cars&scroll=0&orderBy=price%3Aasc&isDriverAgeBetween30And65=true&startDate=${startDate}&startTime=600&endDate=${endDate}&endTime=600`}
                 className="w-[111%] origin-top-left scale-90 h-[4600px] -mb-[400px] border-0"
               />
             </motion.div>
